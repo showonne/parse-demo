@@ -1,16 +1,4 @@
-
-class Token {
-    constructor(type, text){
-        this.type = type
-        this.text = text
-    }
-    toString(){
-        return this.text
-    }
-}
-
-Token.PLUS = 'PLUS'
-Token.INT = 'INT'
+var Token = require('./token.js')
 
 class AST {
     constructor(token = null){

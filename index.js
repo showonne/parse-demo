@@ -8,12 +8,6 @@ const types = {
 
 const EOF = -1
 
-class Token {
-    constructor(type, text){
-        this.type = type
-        this.text = text
-    }
-}
 
 class ListLexer {
     constructor(input){
