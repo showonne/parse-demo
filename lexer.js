@@ -25,7 +25,7 @@ class State {
 }
 
 const TAG_OPEN = /^<([a-zA-Z][\w\-\.]*)\s*/
-const TAG_ATTRIBUTE = /^([-0-9a-z]+)(=(["'])([^\3]*?)\3)?\s*/
+const TAG_ATTRIBUTE = /^([-0-9a-z]+)(=('([^']*)'|"([^"]*)"))?\s*/
 const TAG_END = /^(\/?)>/
 const TAG_CLOSE = /^<\/([a-zA-Z][\w\-\.]*)>/
 const TEXT = /^[^\x00]/
@@ -101,7 +101,7 @@ class Lexer {
 
         if(matched){
             this.input = this.input.slice(matched[0].length)
-            return new Token('TAG_ATTRIBUTE', {type: matched[1], value: matched[4]})
+            return new Token('TAG_ATTRIBUTE', {type: matched[1], value: matched[4] || matched[5]})
         }
     }
     tagEnd(){
@@ -135,7 +135,7 @@ class Lexer {
 }
 
 const str = `
-    <div class="wrapper" id="root">
+    <div class="wrapper" id='root'>
         <h1>I'm h1 tag</h1>
         <input />
     </div>
