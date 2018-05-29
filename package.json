@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node index.js",
-    "ast": "node ast.js"
+    "ast": "node ast.js",
+    "lexer": "node lexer.js"
   },
   "keywords": [],
   "author": "",
