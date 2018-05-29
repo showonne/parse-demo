@@ -1,11 +1,10 @@
 class Token {
-    constructor(type, text){
+    constructor(type, value){
         this.type = type
-        this.text = text
+        if(value){
+            this.value = value
+        }
     }
 }
-
-Token.PLUS = 'PLUS'
-Token.INT = 'INT'
 
 module.exports = Token

@@ -1,28 +1,6 @@
-class Token {
-    constructor(type, value){
-        this.type = type
-        if(value){
-            this.value = value
-        }
-    }
-}
+const Token = require('./token')
 
-class State {
-    constructor(){
-        this.state = []
-    }
-    enter(name){
-        this.state.push(name)
-    }
-    leave(name){
-        if(this.state[this.state.length -1] === name){
-            this.state.pop()
-        }
-    }
-    is(name){
-        return this.state[this.state.length -1] === name
-    }
-}
+const State = require('./state')
 
 const TAG_OPEN = /^<([a-zA-Z][\w\-\.]*)\s*/
 const TAG_ATTRIBUTE = /^([-0-9a-z]+)(=('([^']*)'|"([^"]*)"))?\s*/
@@ -134,7 +112,7 @@ class Lexer {
     }
 }
 
-const str = `
+const str = `  texto ~
     <div class="wrapper" id='root'>
         <h1>I'm h1 tag</h1>
         <input />
