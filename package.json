@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node index.js",
     "ast": "node ast.js",
-    "lexer": "node lexer.js"
+    "lexer": "node lexer.js",
+    "parser": "node parser.js"
   },
   "keywords": [],
   "author": "",

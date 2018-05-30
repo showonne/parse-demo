@@ -79,7 +79,7 @@ class Lexer {
 
         if(matched){
             this.input = this.input.slice(matched[0].length)
-            return new Token('TAG_ATTRIBUTE', {type: matched[1], value: matched[4] || matched[5]})
+            return new Token('TAG_ATTRIBUTE', {name: matched[1], value: matched[4] || matched[5]})
         }
     }
     tagEnd(){
@@ -112,15 +112,17 @@ class Lexer {
     }
 }
 
-const str = `  texto ~
-    <div class="wrapper" id='root'>
-        <h1>I'm h1 tag</h1>
-        <input />
-    </div>
-`
+// const str = `  texto ~
+//     <div class="wrapper" id='root'>
+//         <h1>I'm h1 tag</h1>
+//         <input />
+//     </div>
+// `
 
-let lexer = new Lexer()
+// let lexer = new Lexer()
 
-const res = lexer.lex(str)
+// const res = lexer.lex(str)
 
-console.log(res)
+// console.log(res)
+
+module.exports = Lexer
