@@ -29,8 +29,10 @@ class Parser {
     }
     statements(){
         let root = []
+
+        // this.skip(['WHITE_SPACE'])
         while(this.peek().type !== 'EOF' && this.peek().type !== 'TAG_CLOSE'){
-            this.skip(['WHITE_SPACE'])
+            // this.skip(['WHITE_SPACE'])
 
             // children condition eg: <h1>text </h1>
             if(this.peek().type === 'TAG_CLOSE' || this.peek().type === 'EOF'){
@@ -50,6 +52,7 @@ class Parser {
             case 'TAG_OPEN':
                 return this.tag()
             case 'TEXT':
+            case 'WHITE_SPACE':
                 return this.text()
             default:
                 console.error(`Unexpected token: ${token.type}`)
@@ -84,9 +87,12 @@ class Parser {
 
         // consume tagEnd
         if(this.peek().value.isSelfClosed){
+            node.isSelfClosed = true
             this.consume()
             return node
         }
+
+        node.isSelfClosed = false
         this.consume()
 
         node.children = this.statements() || []
@@ -112,17 +118,19 @@ class Parser {
     }
 }
 
+module.exports = Parser
 
-const str = `texto ~
-    <div class="wrapper" id='root'>
-        <h1>I'm h1 tag</h1>
-        <input />
-    </div>
-`
 
-let lexer = new Lexer()
+// const str = `texto ~
+//     <div Class="wrapper" id='root'>
+//         <h1>I'm h1 tag</h1>
+//         <input />
+//     </div>
+// `
 
-const tokens = lexer.lex(str)
-const ast = new Parser().parse(tokens)
+// let lexer = new Lexer()
+
+// const tokens = lexer.lex(str)
+// const ast = new Parser().parse(tokens)
 // console.log(tokens)
-console.log(ast)
+// console.log(ast)

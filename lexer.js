@@ -3,7 +3,7 @@ const Token = require('./token')
 const State = require('./state')
 
 const TAG_OPEN = /^<([a-zA-Z][\w\-\.]*)\s*/
-const TAG_ATTRIBUTE = /^([-0-9a-z]+)(=('([^']*)'|"([^"]*)"))?\s*/
+const TAG_ATTRIBUTE = /^([-0-9a-zA-Z]+)(=('([^']*)'|"([^"]*)"))?\s*/
 const TAG_END = /^(\/?)>/
 const TAG_CLOSE = /^<\/([a-zA-Z][\w\-\.]*)>/
 const TEXT = /^[^\x00]/
@@ -113,7 +113,7 @@ class Lexer {
 }
 
 // const str = `  texto ~
-//     <div class="wrapper" id='root'>
+//     <div Class="wrapper" id='root'>
 //         <h1>I'm h1 tag</h1>
 //         <input />
 //     </div>
