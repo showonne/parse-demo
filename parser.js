@@ -63,15 +63,11 @@ class Parser {
         // debugger
         const token = this.peek()
 
-        function Tag(name){
-            return {
-                type: 'Tag',
-                name: name,
-                attributes: {}
-            }
+        let node = {
+            type: 'Tag',
+            name: name,
+            attributes: {}
         }
-
-        let node = Tag(token.value)
 
         this.consume()
 
