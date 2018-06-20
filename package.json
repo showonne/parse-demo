@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "node index.js",
-    "ast": "node ast.js",
-    "lexer": "node lexer.js",
-    "parser": "node parser.js",
-    "codegen": "node codegen.js",
+    "ast": "node src/ast.js",
+    "lexer": "node src/lexer.js",
+    "parser": "node src/parser.js",
+    "codegen": "node src/codegen.js",
     "lint": "eslint src/**/*.js"
   },
   "keywords": [],
