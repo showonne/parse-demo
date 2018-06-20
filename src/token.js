@@ -1,7 +1,7 @@
 class Token {
-    constructor(type, value){
+    constructor (type, value) {
         this.type = type
-        if(value){
+        if (value) {
             this.value = value
         }
     }

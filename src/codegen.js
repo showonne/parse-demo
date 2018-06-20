@@ -10,25 +10,24 @@ const str = `texto ~
 let res = ''
 
 const codeGenerate = ast => {
-
-    if(ast.type === 'Program'){
+    if (ast.type === 'Program') {
         ast.body.forEach(child => {
             codeGenerate(child)
         })
     }
-    if(ast.type === 'Text'){
+    if (ast.type === 'Text') {
         res += ast.value
     }
-    if(ast.type === 'Tag'){
+    if (ast.type === 'Tag') {
         res += `<${ast.name} `
         Object.keys(ast.attributes).forEach(key => {
             // code transformer
             res += ` ${key.toLowerCase()}`
             res += ast.attributes[key] ? `="${ast.attributes[key]}"` : ''
         })
-        if(ast.isSelfClosed){
+        if (ast.isSelfClosed) {
             res += '/>'
-        }else{
+        } else {
             res += '>'
             ast.children.forEach(child => {
                 codeGenerate(child)
