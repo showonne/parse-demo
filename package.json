@@ -8,7 +8,8 @@
     "ast": "node ast.js",
     "lexer": "node lexer.js",
     "parser": "node parser.js",
-    "codegen": "node codegen.js"
+    "codegen": "node codegen.js",
+    "lint": "eslint src/**/*.js"
   },
   "keywords": [],
   "author": "",
