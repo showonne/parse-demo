@@ -7,9 +7,12 @@ const TAG_ATTRIBUTE = /^([-0-9a-zA-Z]+)(=('([^']*)'|"([^"]*)"))?\s*/
 const TAG_END = /^(\/?)>/
 const TAG_CLOSE = /^<\/([a-zA-Z][\w\-.]*)>/
 /* eslint-disable no-control-regex */
-const TEXT = /^[^\x00]/
+const TEXT = /^[^\x00|<]/
 /* eslint-enable */
 const WHITE_SPACE = /^\s+/
+
+const EXPRESSION_OPEN = /^\{#(\w+)\s+(.*)\}/
+const EXPRESSION_END = /^\{\/(\w+)\s*\}/
 
 const pattern = {
     TAG_OPEN,
@@ -17,7 +20,9 @@ const pattern = {
     TAG_END,
     TAG_CLOSE,
     TEXT,
-    WHITE_SPACE
+    WHITE_SPACE,
+    EXPRESSION_OPEN,
+    EXPRESSION_END
 }
 
 class Lexer {
@@ -44,6 +49,8 @@ class Lexer {
     advance () {
         const token =
             this.eof() ||
+            this.expressionOpen() ||
+            this.expressionEnd() ||
             this.whitespace() ||
             this.tagOpen() ||
             this.attribute() ||
@@ -56,6 +63,29 @@ class Lexer {
     eof () {
         if (this.input.length > 0) return
         return new Token('EOF')
+    }
+    expressionOpen () {
+        const matched = this.match('EXPRESSION_OPEN');
+
+        if (matched) {
+            this.state.enter('exprOpen')
+            this.input = this.input.slice(matched[0].length)
+            return new Token('EXPRESSION_OPEN', {
+                type: matched[1],
+                expr: matched[2]
+            });
+        }
+    }
+    expressionEnd () {
+        if (!this.state.is('exprOpen')) return
+        const matched = this.match('EXPRESSION_END');
+
+        if (matched) {
+            this.input = this.input.slice(matched[0].length)
+            return new Token('EXPRESSION_END', {
+                type: matched[1]
+            });
+        }
     }
     whitespace () {
         const matched = this.match('WHITE_SPACE')
@@ -107,23 +137,30 @@ class Lexer {
 
         const matched = this.match('TEXT')
         if (matched) {
-            this.input = this.input.slice(matched[0].length)
-            return new Token('TEXT', matched[0])
+            let str = matched[0];
+            this.input = this.input.slice(matched[0].length);
+
+            let rest;
+            while (rest = this.match('TEXT')) {
+                str += rest[0];
+                this.input = this.input.slice(rest[0].length);
+            }
+
+            return new Token('TEXT', str)
         }
     }
 }
 
-const str = `  texto ~
-    <div Class="wrapper" id='root'>
-        <h1>I'm h1 tag</h1>
-        <input />
-    </div>
+// for test
+const str = `texto ~
+<div Class="wrapper" id='root'>
+    <h1>I'm h1 tag</h1>
+    <input />
+</div>
 `
 
 let lexer = new Lexer()
-
 const res = lexer.lex(str)
-
 console.log(res)
 
 module.exports = Lexer

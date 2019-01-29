@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ast": "node src/ast.js",
     "lexer": "node src/lexer.js",
     "parser": "node src/parser.js",
     "codegen": "node src/codegen.js",

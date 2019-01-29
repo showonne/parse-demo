@@ -38,6 +38,7 @@ const codeGenerate = ast => {
     return res
 }
 
+// for test
 let lexer = new Lexer()
 
 const tokens = lexer.lex(str)

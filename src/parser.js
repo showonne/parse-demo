@@ -15,7 +15,6 @@ class Parser {
     }
     parse (tokens) {
         this.tokens = tokens
-
         let ast = {
             type: 'Program',
             body: []
@@ -29,13 +28,13 @@ class Parser {
         let root = []
 
         // this.skip(['WHITE_SPACE'])
-        while (this.peek().type !== 'EOF' && this.peek().type !== 'TAG_CLOSE') {
+        while (this.peek().type !== 'EOF' && this.peek().type !== 'TAG_CLOSE' && this.peek().type !== 'EXPRESSION_END') {
             // this.skip(['WHITE_SPACE'])
 
             // children condition eg: <h1>text </h1>
-            if (this.peek().type === 'TAG_CLOSE' || this.peek().type === 'EOF') {
-                break
-            }
+            // if (this.peek().type === 'TAG_CLOSE' || this.peek().type === 'EOF') {
+            //     break
+            // }
 
             const statement = this.statement()
             if (statement) {
@@ -52,9 +51,30 @@ class Parser {
         case 'TEXT':
         case 'WHITE_SPACE':
             return this.text()
+        case 'EXPRESSION_OPEN':
+            return this.expression()
         default:
             console.error(`Unexpected token: ${token.type}`)
         }
+    }
+    expression () {
+        const token = this.peek();
+        let node = {
+            type: 'Expression',
+            exprType: token.value.type,
+            expr: token.value.expr,
+            body: ''
+        };
+        this.consume()
+        const statements = this.statements()
+        if (statements) {
+            node.body = statements
+        }
+        if (this.peek().value.type !== node.exprType) {
+            return new Error(`no matched expr ${node.exprType} end `)
+        }
+        this.consume()
+        return node
     }
     tag () {
         // debugger
@@ -113,16 +133,16 @@ class Parser {
 
 module.exports = Parser
 
+// for test
 const str = `texto ~
-    <div Class="wrapper" id='root'>
-        <h1>I'm h1 tag</h1>
-        <input />
-    </div>
+<div Class="wrapper" id='root'>
+    <h1>I'm h1 tag</h1>
+    <input />
+</div>
 `
 
 const Lexer = require('./lexer')
 let lexer = new Lexer()
-
 const tokens = lexer.lex(str)
 const ast = new Parser().parse(tokens)
 console.log(ast)
